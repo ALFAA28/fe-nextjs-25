@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontrol DOM - Gaming Interface</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body class="gaming-mode">
+
+    <header class="gaming-dashboard-header">
+        <h1>[ GAMING HUB ALPHA ]</h1>
+        <p>Akses dan modifikasi parameter *in-game* secara langsung.</p>
+    </header>
+
+    <main class="console-grid">
+        
+        <section class="module-card" id="dynamic-list">
+            <h3>:: EVENT LOG ::</h3>
+            <div class="input-group">
+                <input type="text" id="itemInput" placeholder="Tambah Misi Baru...">
+                <button id="addItemBtn" class="action-btn">EXECUTE</button>
+            </div>
+            <ul id="itemList">
+                </ul>
+        </section>
+
+        <section class="module-card" id="background-color-changer">
+            <h3>:: PENGATURAN RGB LED ::</h3>
+            <p>Pilih tema pencahayaan *gaming*:</p>
+            <div class="button-group">
+                <button id="redBtn" class="rgb-btn red-glow" style="--rgb-color: #ff0044;">Mode Agresi</button>
+                <button id="greenBtn" class="rgb-btn green-glow" style="--rgb-color: #00ffaa;">Mode Stealth</button>
+                <button id="blueBtn" class="rgb-btn blue-glow" style="--rgb-color: #0099ff;">Mode Esport</button>
+            </div>
+        </section>
+
+        <section class="module-card" id="dom-counter">
+            <h3>:: FPS COUNTER ::</h3>
+            <div class="counter-container">
+                <button id="decrementBtn" class="control-key">-</button>
+                <div class="counter-display">FPS: <span id="counterValue">0</span></div>
+                <button id="incrementBtn" class="control-key">+</button>
+            </div>
+            <button id="resetBtn" class="reset-btn">Load Default Config</button>
+        </section>
+
+        <section class="module-card" id="toggle-element">
+            <h3>:: STATUS MODUL PENGEMBANG ::</h3>
+            <button id="toggleBtn" class="toggle-btn">Sembunyikan Konsol</button>
+            <p id="toggleParagraph" class="toggle-content debug-text">
+                [DEBUG] Konsol Pengembang Aktif. Risiko *crash* sistem.
+            </p>
+        </section>
+
+    </main>
+    
+    <script src="script.js"></script>
+</body>
+</html>

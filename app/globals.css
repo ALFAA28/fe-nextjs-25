@@ -1,26 +1,76 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* app/globals.css */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 20px;
+  transition: background-color 0.5s ease; /* Transisi untuk perubahan warna background */
+}
+
+h1 {
+  color: #333;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+}
+
+section {
+  margin-bottom: 30px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+button {
+  padding: 8px 15px;
+  margin-right: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Styling Khusus untuk Fitur 1 */
+#itemList {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+#itemList li {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+#itemList li button {
+  margin-left: 10px;
+  background-color: #dc3545; /* Warna merah untuk Hapus */
+}
+
+/* Styling Khusus untuk Fitur 2 */
+/* Catatan: Warna diubah ke warna muda agar teks lebih mudah dibaca saat background berubah */
+#background-color-changer button:nth-child(2) { background-color: #dc3545; }
+#background-color-changer button:nth-child(3) { background-color: #28a745; }
+#background-color-changer button:nth-child(4) { background-color: #007bff; }
+
+
+/* Styling Khusus untuk Fitur 4 */
+.hidden {
+  display: none; /* Class untuk menyembunyikan elemen */
+}
+
+.visible {
+  border: 1px dashed #666;
+  padding: 10px;
+}
+
+/* Style untuk Counter */
+.counter-display {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-weight: bold;
 }

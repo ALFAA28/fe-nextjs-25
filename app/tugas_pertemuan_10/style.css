@@ -1,0 +1,241 @@
+/* style.css (Desain Gaming Interface) */
+
+:root {
+    --bg-main: #10101a;        /* Hitam sangat gelap/navy */
+    --card-bg: #1f1f2a;        /* Background modul */
+    --accent-blue: #0099ff;    /* Biru Electric */
+    --accent-green: #00ffaa;   /* Hijau Neon/Lime */
+    --text-primary: #e0e0e0;
+    --text-secondary: #888899;
+    --border-style: 1px solid var(--accent-blue);
+    --glow-effect: 0 0 8px rgba(0, 153, 255, 0.6);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ------------------ BODY & HEADER ------------------ */
+
+body {
+    font-family: 'Share Tech Mono', monospace; /* Font monospasi teknis */
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.5;
+    transition: background-color 0.5s ease;
+    min-height: 100vh;
+}
+
+.gaming-dashboard-header {
+    background-color: var(--card-bg);
+    padding: 30px 0;
+    text-align: center;
+    border-bottom: 2px solid var(--accent-blue);
+    box-shadow: var(--glow-effect);
+    margin-bottom: 30px;
+}
+
+.gaming-dashboard-header h1 {
+    font-family: 'Audiowide', sans-serif; /* Font display agresif */
+    font-weight: 600;
+    color: var(--accent-green);
+    letter-spacing: 5px;
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.8);
+    margin-bottom: 5px;
+}
+
+.gaming-dashboard-header p {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* ------------------ LAYOUT UTAMA (GRID CONSOLE) ------------------ */
+
+.console-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 25px;
+}
+
+.module-card {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 5px;
+    border: var(--border-style);
+    box-shadow: 0 0 5px rgba(0, 153, 255, 0.4);
+}
+
+.module-card h3 {
+    font-family: 'Audiowide', sans-serif;
+    color: var(--accent-blue);
+    border-bottom: 1px dashed var(--text-secondary);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+
+/* ------------------ BUTTONS & INPUTS ------------------ */
+
+button {
+    padding: 10px 15px;
+    border: 2px solid var(--accent-green);
+    background-color: transparent;
+    color: var(--accent-green);
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background-color: var(--accent-green);
+    color: var(--bg-main);
+    box-shadow: 0 0 12px var(--accent-green);
+}
+
+.action-btn, .toggle-btn {
+    border: 2px solid var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.action-btn:hover, .toggle-btn:hover {
+    background-color: var(--accent-blue);
+    color: white;
+    box-shadow: 0 0 12px var(--accent-blue);
+}
+
+.control-key {
+    border: 2px solid var(--text-secondary);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+}
+.control-key:hover {
+    background-color: var(--text-secondary);
+    color: var(--bg-main);
+    box-shadow: none;
+}
+
+.reset-btn {
+    background-color: #333;
+    border: 2px solid #ff0044;
+    color: #ff0044;
+    margin-top: 15px;
+    width: 100%;
+}
+.reset-btn:hover {
+    background-color: #ff0044;
+    color: white;
+    box-shadow: 0 0 12px #ff0044;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid var(--accent-blue);
+    background-color: #0a0a14;
+    color: var(--accent-green);
+    border-radius: 3px;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-green);
+    box-shadow: 0 0 5px var(--accent-green);
+}
+
+.input-group {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+/* ------------------ FITUR 1: LOG LIST ------------------ */
+
+#itemList {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9em;
+}
+
+#itemList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a25;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border-radius: 3px;
+    border-left: 3px solid var(--accent-blue);
+    color: var(--text-primary);
+}
+
+#itemList li button {
+    background-color: #ff0044;
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    font-size: 0.7em;
+    letter-spacing: normal;
+}
+
+/* ------------------ FITUR 2: RGB LED (MODE DRIVE) ------------------ */
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.rgb-btn {
+    border: 1px solid var(--rgb-color); 
+    background-color: transparent;
+    color: var(--rgb-color);
+    flex-grow: 1;
+    font-weight: 700;
+}
+.rgb-btn:hover {
+    box-shadow: 0 0 15px var(--rgb-color);
+    background-color: var(--rgb-color);
+    color: var(--bg-main);
+}
+
+/* ------------------ FITUR 3: COUNTER (FPS) ------------------ */
+
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.counter-display {
+    font-family: 'Audiowide', sans-serif;
+    font-size: 3em;
+    font-weight: 800;
+    color: var(--accent-green); /* Warna FPS */
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.8);
+    padding: 10px 20px;
+    border: 1px dashed var(--accent-green);
+    border-radius: 3px;
+}
+
+/* ------------------ FITUR 4: TOGGLE (DEBUG) ------------------ */
+
+.debug-text {
+    background-color: #333333;
+    padding: 15px;
+    border: 1px dashed var(--accent-blue);
+    border-radius: 5px;
+    font-style: italic;
+    color: #ff0044; /* Peringatan merah */
+}
+
+.hidden {
+    display: none;
+}
