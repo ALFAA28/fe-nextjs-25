@@ -1,12 +1,10 @@
-import Button from "@/components/ui/Button";
+import { service } from "@/services/services";
 import Layout from "@/components/ui/Layout";
-import Image from "next/image";
 
-export default function Home() {
-  return (
+export default function Page() {
+return (
     <Layout>
-      <h1>Home</h1>
-      <Button />
+      <h1 className="text-black">Home</h1>
     </Layout>
   );
 }

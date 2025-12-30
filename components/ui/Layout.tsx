@@ -1,22 +1,20 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Navbar from './navbar'; // Tambahkan baris ini!
 
 interface LayoutProps {
   children: React.ReactNode;
 }
+
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-8 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        {children}
+    <div className="min-h-screen flex flex-col bg-zinc-50 font-sans">
+      {/* Sekarang Navbar sudah didefinisikan dan bisa dipanggil */}
+      <Navbar /> 
+
+      <main className="flex-grow mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-2xl shadow-sm p-6 md:p-10 min-h-[70vh]">
+          {children}
+        </div>
       </main>
     </div>
   );
