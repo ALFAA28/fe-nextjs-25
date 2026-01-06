@@ -1,5 +1,3 @@
-
-
 import callAPI from '@/config/api';
 
 const ROOT_API = process.env.NEXT_PUBLIC_API;
