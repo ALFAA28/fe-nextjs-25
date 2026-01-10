@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import LoginRequired from "@/components/auth/LoginRequired";
 
 type CategoryRow = {
   id: number;
@@ -16,6 +18,7 @@ type CategoryRow = {
 export default function Page() {
   const [rows, setRows] = useState<CategoryRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const getData = async () => {
     setLoading(true);
@@ -26,7 +29,7 @@ export default function Page() {
 
       if (response.error) {
         console.error("API Error:", response.message);
-        alert("Error: " + response.message);
+        // alert("Error: " + response.message); 
         setRows([]);
         return;
       }
@@ -48,25 +51,12 @@ export default function Page() {
         return;
       }
 
-      console.log("Data Array Length:", dataArray.length);
-      console.log("First Item Raw:", dataArray[0]);
-
-      if (dataArray.length === 0) {
-        console.warn("No data found in response");
-        alert(
-          "Tidak ada data kategori. Silakan tambahkan data terlebih dahulu."
-        );
-        setRows([]);
-        return;
-      }
-
       const mapped = dataArray.map((item: any, index: number) => ({
         id: item.id || index + 1,
         nama: item.name || item.nama || `Category ${index + 1}`,
         deskripsi: item.description || item.deskripsi || "-",
       }));
 
-      console.log("Mapped categories:", mapped);
       setRows(mapped);
     } catch (error: any) {
       console.error("Exception fetching categories:", error);
@@ -78,7 +68,13 @@ export default function Page() {
   };
 
   useEffect(() => {
-    getData();
+    const token = Cookies.get("token");
+    if (!token) {
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(true);
+      getData();
+    }
   }, []);
 
   const handleDelete = async (id: number) => {
@@ -129,6 +125,14 @@ export default function Page() {
       ),
     },
   ];
+
+  if (!isLoggedIn) {
+    return (
+      <Layout>
+        <LoginRequired />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

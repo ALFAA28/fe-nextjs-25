@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import LoginRequired from "@/components/auth/LoginRequired";
 
 type VariantRow = {
   id: number;
@@ -18,87 +20,63 @@ type VariantRow = {
 export default function Page() {
   const [rows, setRows] = useState<VariantRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const getData = async () => {
     setLoading(true);
     try {
       const response = await service("product-variants");
       console.log("=== PRODUCT VARIANT API RESPONSE ===");
-      console.log("Full Response:", JSON.stringify(response, null, 2));
+      // ... 
 
       if (response.error) {
         console.error("API Error:", response.message);
-        alert("Error: " + response.message);
         setRows([]);
         return;
       }
 
-      if (!response.data) {
-        console.error("No data in response");
-        setRows([]);
-        return;
-      }
-
-      // Handle array response
       let dataArray = [];
       if (Array.isArray(response.data)) {
         dataArray = response.data;
       } else if (response.data.data && Array.isArray(response.data.data)) {
         dataArray = response.data.data;
       } else {
-        console.error("Unexpected data structure:", response.data);
         setRows([]);
         return;
       }
 
-      console.log("Data Array Length:", dataArray.length);
-      console.log("First Item Raw:", dataArray[0]);
-
       if (dataArray.length === 0) {
-        console.warn("No data found in response");
-        alert("Tidak ada data varian. Silakan tambahkan data terlebih dahulu.");
         setRows([]);
         return;
       }
 
       const mapped = dataArray.map((item: any, index: number) => {
-        console.log(`Mapping item ${index}:`, item);
-
-        // Extract product name
-        let productName = "-";
-        if (item.product && typeof item.product === "object") {
-          productName = item.product.nama || item.product.name || "-";
-        }
-
-        const mappedItem = {
+        return {
           id: item.id || index + 1,
           nama: item.nama || item.name || `Variant ${index + 1}`,
           tambahan_harga:
             item.tambahan_harga !== undefined && item.tambahan_harga !== null
               ? Number(item.tambahan_harga)
               : item.harga !== undefined && item.harga !== null
-              ? Number(item.harga)
-              : item.price !== undefined && item.price !== null
-              ? Number(item.price)
-              : 0,
+                ? Number(item.harga)
+                : item.price !== undefined && item.price !== null
+                  ? Number(item.price)
+                  : 0,
           stok:
             item.stok !== undefined && item.stok !== null
               ? Number(item.stok)
               : item.stock !== undefined && item.stock !== null
-              ? Number(item.stock)
-              : 0,
-          product: productName,
+                ? Number(item.stock)
+                : 0,
+          product: item.product && typeof item.product === "object"
+            ? (item.product.nama || item.product.name || "-")
+            : "-",
         };
-
-        console.log(`  Mapped to:`, mappedItem);
-        return mappedItem;
       });
 
-      console.log("Final Mapped Rows:", mapped);
       setRows(mapped);
     } catch (error: any) {
       console.error("Exception fetching variants:", error);
-      alert("Terjadi kesalahan: " + (error.message || "Unknown error"));
       setRows([]);
     } finally {
       setLoading(false);
@@ -106,7 +84,13 @@ export default function Page() {
   };
 
   useEffect(() => {
-    getData();
+    const token = Cookies.get("token");
+    if (!token) {
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(true);
+      getData();
+    }
   }, []);
 
   const handleDelete = async (id: number) => {
@@ -159,6 +143,14 @@ export default function Page() {
       ),
     },
   ];
+
+  if (!isLoggedIn) {
+    return (
+      <Layout>
+        <LoginRequired />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 interface CallAPIProps extends AxiosRequestConfig {
-  data?: FormData;
+  data?: any;
   token?: boolean;
   serverToken?: string;
   contentType?: string;
@@ -39,7 +39,7 @@ export default async function callAPI({
     contentType || (data instanceof FormData ? 'multipart/form-data' : 'application/json');
 
   console.log('API Call:', { url, method, headers }); // Debug log
-  
+
   const response = await axios({
     url,
     method,
@@ -60,7 +60,7 @@ export default async function callAPI({
       },
     };
   });
-  
+
   console.log('API Response Status:', response.status); // Debug log
   console.log('API Response Data:', response.data); // Debug log
 

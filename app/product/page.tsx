@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import LoginRequired from "@/components/auth/LoginRequired";
 
 type ProductRow = {
   id: number;
@@ -17,23 +19,17 @@ type ProductRow = {
 export default function Page() {
   const [rows, setRows] = useState<ProductRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const getData = async () => {
     setLoading(true);
     try {
       const response = await service("products");
       console.log("=== PRODUCT API RESPONSE ===");
-      console.log("Full Response:", JSON.stringify(response, null, 2));
+      // ... 
 
       if (response.error) {
         console.error("API Error:", response.message);
-        alert("Error: " + response.message);
-        setRows([]);
-        return;
-      }
-
-      if (!response.data) {
-        console.error("No data in response");
         setRows([]);
         return;
       }
@@ -44,17 +40,6 @@ export default function Page() {
       } else if (response.data.data && Array.isArray(response.data.data)) {
         dataArray = response.data.data;
       } else {
-        console.error("Unexpected data structure:", response.data);
-        setRows([]);
-        return;
-      }
-
-      console.log("Data Array Length:", dataArray.length);
-      console.log("First Item Raw:", dataArray[0]);
-
-      if (dataArray.length === 0) {
-        console.warn("No data found in response");
-        alert("Tidak ada data produk. Silakan tambahkan data terlebih dahulu.");
         setRows([]);
         return;
       }
@@ -75,11 +60,9 @@ export default function Page() {
         };
       });
 
-      console.log("Mapped products:", mapped);
       setRows(mapped);
     } catch (error: any) {
       console.error("Exception fetching products:", error);
-      alert("Terjadi kesalahan: " + (error.message || "Unknown error"));
       setRows([]);
     } finally {
       setLoading(false);
@@ -87,7 +70,13 @@ export default function Page() {
   };
 
   useEffect(() => {
-    getData();
+    const token = Cookies.get("token");
+    if (!token) {
+      setIsLoggedIn(false);
+    } else {
+      setIsLoggedIn(true);
+      getData();
+    }
   }, []);
 
   const handleDelete = async (id: number) => {
@@ -98,7 +87,7 @@ export default function Page() {
       const response = await serviceDestroy("products", String(id));
       if (!response.error) {
         alert("Produk berhasil dihapus");
-        getData(); // Refresh data
+        getData();
       } else {
         alert(
           "Gagal menghapus produk: " + (response.message || "Unknown error")
@@ -139,6 +128,14 @@ export default function Page() {
       ),
     },
   ];
+
+  if (!isLoggedIn) {
+    return (
+      <Layout>
+        <LoginRequired />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

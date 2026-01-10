@@ -78,3 +78,34 @@ export async function serviceDestroy(params: string, id: string) {
     token: true,
   });
 }
+
+export async function authLogin(data: object) {
+  const url = `${ROOT_API}/${API_VERSION}/login`;
+
+  return callAPI({
+    url,
+    method: 'POST',
+    data,
+  });
+}
+
+export async function authRegister(data: object) {
+  const url = `${ROOT_API}/${API_VERSION}/register`;
+
+  return callAPI({
+    url,
+    method: 'POST',
+    data,
+  });
+}
+
+export async function authLogout(token: string) {
+  const url = `${ROOT_API}/${API_VERSION}/logout`;
+
+  return callAPI({
+    url,
+    method: 'POST',
+    serverToken: token,
+    token: true,
+  });
+}
