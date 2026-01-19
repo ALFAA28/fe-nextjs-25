@@ -9,6 +9,12 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import LoginRequired from "@/components/auth/LoginRequired";
 
+// Tambahkan import berikut
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 type CategoryRow = {
   id: number;
   nama: string;
@@ -24,18 +30,12 @@ export default function Page() {
     setLoading(true);
     try {
       const response = await service("product-categories");
-      console.log("=== CATEGORY API RESPONSE ===");
-      console.log("Full Response:", JSON.stringify(response, null, 2));
-
       if (response.error) {
-        console.error("API Error:", response.message);
-        // alert("Error: " + response.message); 
         setRows([]);
         return;
       }
 
       if (!response.data) {
-        console.error("No data in response");
         setRows([]);
         return;
       }
@@ -46,7 +46,6 @@ export default function Page() {
       } else if (response.data.data && Array.isArray(response.data.data)) {
         dataArray = response.data.data;
       } else {
-        console.error("Unexpected data structure:", response.data);
         setRows([]);
         return;
       }
@@ -59,8 +58,6 @@ export default function Page() {
 
       setRows(mapped);
     } catch (error: any) {
-      console.error("Exception fetching categories:", error);
-      alert("Terjadi kesalahan: " + (error.message || "Unknown error"));
       setRows([]);
     } finally {
       setLoading(false);
@@ -85,18 +82,18 @@ export default function Page() {
       const response = await serviceDestroy("product-categories", String(id));
       if (!response.error) {
         alert("Kategori berhasil dihapus");
-        getData(); // Refresh data
+        getData();
       } else {
         alert(
           "Gagal menghapus kategori: " + (response.message || "Unknown error")
         );
       }
     } catch (error) {
-      console.error("Error deleting category:", error);
       alert("Terjadi kesalahan saat menghapus kategori");
     }
   };
 
+  // --- BAGIAN YANG DIPERBAIKI ---
   const columns: GridColDef[] = [
     { field: "id", headerName: "No", width: 80 },
     { field: "nama", headerName: "Category Name", width: 220 },
@@ -104,27 +101,32 @@ export default function Page() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 120, // Lebar disesuaikan karena ikon lebih hemat tempat
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
-        <div className="flex gap-2">
-          <Link href={`/product-category/${params.row.id}/edit`}>
-            <Button variant="outlined" size="small">
-              Edit
-            </Button>
-          </Link>
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            Delete
-          </Button>
+        <div className="flex gap-1 items-center h-full">
+          <Tooltip title="Edit">
+            <Link href={`/product-category/${params.row.id}/edit`}>
+              <IconButton color="primary" size="small">
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Link>
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <IconButton
+              color="error"
+              size="small"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </div>
       ),
     },
   ];
+  // --- SELESAI PERBAIKAN ---
 
   if (!isLoggedIn) {
     return (
@@ -147,7 +149,9 @@ export default function Page() {
         </div>
       </div>
       <div style={{ height: 400, width: "100%" }}>
-        <DataGrid rows={rows} columns={columns} loading={loading} />
+        <div className="bg-white rounded-lg shadow">
+          <DataGrid rows={rows} columns={columns} loading={loading} />
+        </div>
       </div>
     </Layout>
   );

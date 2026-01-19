@@ -8,6 +8,9 @@ import Button from "@mui/material/Button";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import LoginRequired from "@/components/auth/LoginRequired";
+import { IconButton, Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type ProductRow = {
   id: number;
@@ -107,23 +110,27 @@ export default function Page() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 120, // Lebar disesuaikan karena ikon lebih hemat tempat
       sortable: false,
       renderCell: (params: GridRenderCellParams) => (
-        <div className="flex gap-2">
-          <Link href={`/product/${params.row.id}/edit`}>
-            <Button variant="outlined" size="small">
-              Edit
-            </Button>
-          </Link>
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            Delete
-          </Button>
+        <div className="flex gap-1 items-center h-full">
+          <Tooltip title="Edit">
+            <Link href={`/product/${params.row.id}/edit`}>
+              <IconButton color="primary" size="small">
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Link>
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <IconButton
+              color="error"
+              size="small"
+              onClick={() => handleDelete(params.row.id)}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </div>
       ),
     },
